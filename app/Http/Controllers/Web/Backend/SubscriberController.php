@@ -28,18 +28,29 @@ class SubscriberController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function ($data) {
                     return '<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                                <a href="#" type="button" onclick="#" class="btn btn-danger fs-14 text-white delete-icn" title="Delete">
-                                    <i class="fe fe-trash"></i>
+                                <a href="#" type="button" onclick="goToOpen(' . $data->id . ')" class="btn btn-primary fs-14 text-white delete-icn" title="Delete">
+                                    <i class="fe fe-eye"></i>
                                 </a>
                             </div>';
                 })
                 ->rawColumns(['action'])
                 ->make();
         }
-        return view("backend.layouts.subscriber",[
+        return view("backend.layouts.subscriber.index",[
             'sectioninfo' => $sectioninfo,
             'page' => 'all',
             'section' => 'subscriber',
         ]);
+    }
+
+     public function show($id)
+    {
+        $subcribe = Subscriber::with('emailLogs')->find($id);
+
+        if (!$subcribe) {
+            return redirect()->route('admin.subscriber.index')->with('error', 'Subscriber not found');
+        }
+
+        return view("backend.layouts.subscriber.show", compact('subcribe'));
     }
 }

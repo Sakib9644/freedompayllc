@@ -35,6 +35,7 @@ use App\Http\Controllers\Web\Backend\Settings\StripeController;
 use App\Http\Controllers\Web\Backend\Settings\GoogleMapController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Web\Backend\DashboardController;
+use App\Http\Controllers\Web\Backend\EmailLogController;
 use App\Http\Controllers\Web\Backend\FaqController;
 use App\Http\Controllers\Web\Backend\FileManagerController;
 use App\Http\Controllers\Web\Backend\ImageController;
@@ -198,8 +199,14 @@ Route::group(['middleware' => ['web-admin']], function () {
         Route::get('/status/{id}', 'status')->name('status');
     });
 
-    Route::get('subscriber', [SubscriberController::class, 'index'])->name('subscriber.index');
+    // Route::get('subscriber', [SubscriberController::class, 'index'])->name('subscriber.index');
+    // Route::get('subscriber', [SubscriberController::class, 'index'])->name('subscriber.index');
+    Route::post('/send-email', [EmailLogController::class, 'store'])->name('send.email');
 
+    Route::controller(SubscriberController::class)->prefix('subscriber')->name('subscriber.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/show/{id}', 'show')->name('show');
+    });
     Route::controller(ContactController::class)->prefix('contact')->name('contact.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/status/{id}', 'status')->name('status');
@@ -236,7 +243,7 @@ Route::group(['middleware' => ['web-admin']], function () {
             Route::put('/content', 'content')->name('content');
             Route::get('/display', 'display')->name('display');
         });
-         Route::prefix('home/work-together')->name('home.work_together.')->controller(HomeWorkTogetherController::class)->group(function () {
+        Route::prefix('home/work-together')->name('home.work_together.')->controller(HomeWorkTogetherController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{id}/show', 'show')->name('show');
 
@@ -244,7 +251,7 @@ Route::group(['middleware' => ['web-admin']], function () {
             Route::get('/display/{id}', 'display')->name('display');
         });
 
-          Route::prefix('home/founder-story')->name('home.founder_story.')->controller(HomeFounderStoryController::class)->group(function () {
+        Route::prefix('home/founder-story')->name('home.founder_story.')->controller(HomeFounderStoryController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{id}/show', 'show')->name('show');
 

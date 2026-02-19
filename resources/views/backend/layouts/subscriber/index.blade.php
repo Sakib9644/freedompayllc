@@ -50,8 +50,8 @@
                                     <thead>
                                         <tr>
                                             <th class="bg-transparent border-bottom-0 wp-15">ID</th>
-                                            <th class="bg-transparent border-bottom-0 wp-15">Email</th>
-                                            <th class="bg-transparent border-bottom-0">Action</th>
+                                            <th class="bg-transparent border-bottom-0">Email</th>
+                                            <th class="bg-transparent border-bottom-0 wp-20">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -192,7 +192,8 @@
 
     //edit
      function goToOpen(id) {
-   
+        let url = "{{ route('admin.subscriber.show', ':id') }}";
+        window.location.href = url.replace(':id', id);
     }
 </script>
 @endpush
