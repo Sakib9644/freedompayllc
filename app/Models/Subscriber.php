@@ -12,4 +12,8 @@ class Subscriber extends Model
     {
         return $this->hasMany(EmailLog::class, 'to_email', 'email');
     }
+    public function pdfRequest()
+    {
+        return $this->hasOne(PdfRequest::class, 'email', 'email');
+    }
 }

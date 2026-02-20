@@ -52,6 +52,7 @@
                                             <tr>
                                                 <th class="bg-transparent border-bottom-0 wp-15">ID</th>
                                                 <th class="bg-transparent border-bottom-0">Email</th>
+                                                <th class="bg-transparent border-bottom-0">Subscriptions</th>
                                                 <th class="bg-transparent border-bottom-0 wp-20">Action</th>
                                             </tr>
                                         </thead>
@@ -114,7 +115,7 @@
 
                     </div>
                     <div class="mb-3">
-                        <div class="col-md-12">
+                        <div class="col-md-12 {{ in_array('image', $components) ? '' : 'd-none' }}">
                             <x-form.file name="image" label="Image" :file="$sectioninfo->image ?? ''">
                                 <p class="textTransform">Image Size Less than 5MB and Image Type must be jpeg,jpg,png.</p>
                             </x-form.file>
@@ -173,7 +174,7 @@
                     pagingType: "full_numbers",
                     dom: "<'row justify-content-between table-topbar'<'col-md-4 col-sm-3'l><'col-md-5 col-sm-5 px-0'f>>tipr",
                     ajax: {
-                        url: "{{ route('admin.subscriber.index') }}",
+                        url: "{{ route('admin.pdf_request.index') }}",
                         type: "GET",
                     },
 
@@ -186,6 +187,12 @@
                         {
                             data: 'email',
                             name: 'email',
+                            orderable: true,
+                            searchable: true
+                        },
+                           {
+                            data: 'is_subcribe',
+                            name: 'is_subcribe',
                             orderable: true,
                             searchable: true
                         },
@@ -203,7 +210,7 @@
 
         //edit
         function goToOpen(id) {
-            let url = "{{ route('admin.subscriber.show', ':id') }}";
+            let url = "{{ route('admin.pdf_request.show', ':id') }}";
             window.location.href = url.replace(':id', id);
         }
     </script>

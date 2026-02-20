@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\PdfRequest;
 use App\Models\Subscriber;
 use Exception;
 use Illuminate\Http\Request;
@@ -66,6 +67,36 @@ class SubscriberController extends Controller
         } catch (\Throwable $e) {
 
             Log::error('Subscriber creation failed', [
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again.',
+            ], 500);
+        }
+    }
+
+    public function pdfGuide(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => ['required', 'email', 'unique:subscribers,email'],
+        ]);
+
+        try {
+            $subscriber = PdfRequest::create([
+                'email' => $validated['email'],
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'PDF Link Send Successfully.',
+                'data'    => $subscriber,
+            ], 201);
+
+        } catch (\Throwable $e) {
+
+            Log::error('PDF Request creation failed', [
                 'error' => $e->getMessage()
             ]);
 

@@ -37,8 +37,15 @@ class SectionInfoController extends Controller
             $validatedData = $request->validate([
                 'title'     => 'nullable|string',
                 'sub_title' => 'nullable|string',
+                'image' => 'nullable|image|mimes:jpeg,jpg,png|max:5120', // Max size 5MB
             ]);
-
+            if ($request->hasFile('image')) {
+                $existingCMS = CMS::where('page', $page)->where('section', $page . '-' . $section)->where('slug', $section)->first();
+                if ($existingCMS && $existingCMS->image) {
+                    Helper::fileDelete(public_path($existingCMS->image));
+                }
+                $validatedData['image'] = uploadImage($request->file('image'), 'cms');
+            }
             CMS::updateOrCreate(
                 [
                     'page'    => $page,
@@ -48,6 +55,7 @@ class SectionInfoController extends Controller
                 [
                     'title'     => $validatedData['title'] ?? null,
                     'sub_title' => $validatedData['sub_title'] ?? null,
+                    'image'     => $validatedData['image'] ?? null,
                 ]
             );
 

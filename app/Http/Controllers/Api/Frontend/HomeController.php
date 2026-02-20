@@ -75,7 +75,11 @@ class HomeController extends Controller
         $settings               = Setting::first();
         return $settings ?? null;
     }
-
+    public static function subscriber()
+    {
+        $subscriber = CMS::where('page', 'all')->where('section', 'all-subscriber')->where('slug', 'subscriber')->orderBy('id', 'desc')->first();
+        return $subscriber ? new CMSResource($subscriber) : null;
+    }
 
     public function index()
     {
@@ -107,7 +111,8 @@ class HomeController extends Controller
         $data['supplyment']         = $this->supplyment();
         $data['life_without']       = $this->lifeWithout();
         $data['founder_story']      = $this->founderStory();
-        $data['home_about']         = $this->homeAbout();
+        // $data['home_about']         = $this->homeAbout();
+        $data['subscriber']         = $this->subscriber();
         $data['settings']           = $this->settings();
 
         return Helper::jsonResponse(true, 'Home Page', 200, $data);

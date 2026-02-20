@@ -42,6 +42,7 @@ use App\Http\Controllers\Web\Backend\ImageController;
 use App\Http\Controllers\Web\Backend\MenuController;
 use App\Http\Controllers\Web\Backend\OrderController;
 use App\Http\Controllers\Web\Backend\PageController;
+use App\Http\Controllers\Web\Backend\PdfRequestController;
 use App\Http\Controllers\Web\Backend\PostController;
 use App\Http\Controllers\Web\Backend\ProductController;
 use App\Http\Controllers\Web\Backend\PropertyController;
@@ -204,6 +205,11 @@ Route::group(['middleware' => ['web-admin']], function () {
     Route::post('/send-email', [EmailLogController::class, 'store'])->name('send.email');
 
     Route::controller(SubscriberController::class)->prefix('subscriber')->name('subscriber.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/show/{id}', 'show')->name('show');
+        Route::delete('/delete/{id}', 'destroy')->name('destroy');
+    });
+     Route::controller(PdfRequestController::class)->prefix('pdf-request')->name('pdf_request.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
         Route::delete('/delete/{id}', 'destroy')->name('destroy');

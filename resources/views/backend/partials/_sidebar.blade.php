@@ -32,6 +32,12 @@ use Illuminate\Support\Facades\Route;
                         <span class=" side-menu__label">Subscriber</span>
                     </a>
                 </li>
+                <li class="slide">
+                    <a class="side-menu__item {{  request()->routeIs('admin.pdf_request.index') ? 'has-link active' : '' }}" href="{{ route('admin.pdf_request.index') }}">
+                        <i class="fa-solid fa-file-pdf side-menu__icon"></i>
+                        <span class=" side-menu__label">PDF Requests</span>
+                    </a>
+                </li>
 
                 <li>
                     <h3>Basic</h3>
