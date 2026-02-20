@@ -60,6 +60,12 @@ class ProductResource extends JsonResource
                 !is_null($this->supply_days),
                 $this->supply_days
             ),
+            'included_items'  => $this->bundleItems->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'item' => $item->title,
+                ];
+            }),
 
             'others' => $this->when(
                 !is_null($this->others),

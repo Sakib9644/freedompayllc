@@ -16,48 +16,99 @@ use App\Traits\CMSData;
 class HomeController extends Controller
 {
     use CMSData;
-    public function index()
+    public static function banner()
     {
-        $data = [];
+        $banner = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::BANNER)->first();
+        return $banner ? new CMSResource($banner) : null;
+    }
+    public static function hero()
+    {
+        $hero  = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::HERO)->first();
+        return $hero ? new CMSResource($hero) : null;
+    }
 
-        $banner                 = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::BANNER)->first();
-        $hero                   = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::HERO)->first();
+    public static function whatMakes()
+    {
         $whats_make             = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::WHAT_MAKES->value)->get();
         $whats_make_section       = CMS::where('page', PageEnum::HOME)
             ->where('section', PageEnum::HOME->value . '-' . SectionEnum::WHAT_MAKES->value)
             ->where('slug', SectionEnum::WHAT_MAKES)->first();
-
-        $supplyment             = CMS::where('page', PageEnum::HOME->value)->where('section', SectionEnum::SUPPLYMENT->value)->get();
-        $supplyment_section       = CMS::where('page', PageEnum::HOME)
-            ->where('section', PageEnum::HOME->value . '-' . SectionEnum::SUPPLYMENT->value)
-            ->where('slug', SectionEnum::SUPPLYMENT)->first();
-        $life_without           = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::LIFE_WITHOUT->value)->get();
-        $life_without_section       = CMS::where('page', PageEnum::HOME)
-            ->where('section', PageEnum::HOME->value . '-' . SectionEnum::LIFE_WITHOUT->value)
-            ->where('slug', SectionEnum::LIFE_WITHOUT)->first();
-
-        $founder_story          = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::FOUNDER_STORY->value)->first();
-        $home_about             = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::ABOUT->value)->first();
-        $settings               = Setting::first();
-
-        $data['banner']             = $banner ? new CMSResource($banner) : null;
-        $data['hero']               = $hero ? new CMSResource($hero) : null;
-
-        $data['whats_make']         = [
+        return [
             'section' => $whats_make_section ? new CMSResource($whats_make_section) : null,
             'data' => $whats_make ? CMSResource::collection($whats_make) : null
         ];
-        $data['supplyment']         = [ 
-            'section' => $supplyment_section ? new CMSResource($supplyment_section) : null,
-            'data' => $supplyment ? CMSResource::collection($supplyment) : null
-        ];
-        $data['life_without']       = [ 
+    }
+    public static function lifeWithout()
+    {
+        $life_without             = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::LIFE_WITHOUT->value)->get();
+        $life_without_section       = CMS::where('page', PageEnum::HOME)
+            ->where('section', PageEnum::HOME->value . '-' . SectionEnum::LIFE_WITHOUT->value)
+            ->where('slug', SectionEnum::LIFE_WITHOUT)->first();
+        return [
             'section' => $life_without_section ? new CMSResource($life_without_section) : null,
             'data' => $life_without ? CMSResource::collection($life_without) : null
         ];
-        $data['founder_story']      = $founder_story ? new CMSResource($founder_story) : null;
-        $data['home_about']         = $home_about ? new CMSResource($home_about) : null;
-        $data['settings']           = $settings;
+    }
+    public static function supplyment()
+    {
+        $supplyment             = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::SUPPLYMENT->value)->get();
+        $supplyment_section       = CMS::where('page', PageEnum::HOME)
+            ->where('section', PageEnum::HOME->value . '-' . SectionEnum::SUPPLYMENT->value)
+            ->where('slug', SectionEnum::SUPPLYMENT)->first();
+        return [
+            'section' => $supplyment_section ? new CMSResource($supplyment_section) : null,
+            'data' => $supplyment ? CMSResource::collection($supplyment) : null
+        ];
+    }
+    public static function founderStory()
+    {
+        $founder_story          = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::FOUNDER_STORY->value)->first();
+        return $founder_story ? new CMSResource($founder_story) : null;
+    }
+    public static function homeAbout()
+    {
+        $home_about             = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::ABOUT->value)->first();
+        return $home_about ? new CMSResource($home_about) : null;
+    }
+    public static function settings()
+    {
+        $settings               = Setting::first();
+        return $settings ?? null;
+    }
+
+
+    public function index()
+    {
+        $data = [];
+
+        // $banner                 = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::BANNER)->first();
+        // $hero                   = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::HERO)->first();
+        // $whats_make             = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::WHAT_MAKES->value)->get();
+        // $whats_make_section       = CMS::where('page', PageEnum::HOME)
+        //     ->where('section', PageEnum::HOME->value . '-' . SectionEnum::WHAT_MAKES->value)
+        //     ->where('slug', SectionEnum::WHAT_MAKES)->first();
+
+        // $supplyment             = CMS::where('page', PageEnum::HOME->value)->where('section', SectionEnum::SUPPLYMENT->value)->get();
+        // $supplyment_section       = CMS::where('page', PageEnum::HOME)
+        //     ->where('section', PageEnum::HOME->value . '-' . SectionEnum::SUPPLYMENT->value)
+        //     ->where('slug', SectionEnum::SUPPLYMENT)->first();
+        // $life_without           = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::LIFE_WITHOUT->value)->get();
+        // $life_without_section       = CMS::where('page', PageEnum::HOME)
+        //     ->where('section', PageEnum::HOME->value . '-' . SectionEnum::LIFE_WITHOUT->value)
+        //     ->where('slug', SectionEnum::LIFE_WITHOUT)->first();
+
+        // $founder_story          = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::FOUNDER_STORY->value)->first();
+        // $home_about             = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::ABOUT->value)->first();
+        // $settings               = Setting::first();
+
+        $data['banner']             = $this->banner();
+        $data['hero']               = $this->hero();
+        $data['whats_make']         = $this->whatMakes();
+        $data['supplyment']         = $this->supplyment();
+        $data['life_without']       = $this->lifeWithout();
+        $data['founder_story']      = $this->founderStory();
+        $data['home_about']         = $this->homeAbout();
+        $data['settings']           = $this->settings();
 
         return Helper::jsonResponse(true, 'Home Page', 200, $data);
     }
@@ -98,16 +149,17 @@ class HomeController extends Controller
     {
         $data = [];
 
-        $hero           = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::HERO)->first();
-        $product     = Product::where('status', 'active')->first();
-        $worktogether     = CMS::where('page', PageEnum::HOME->value)->where('section', SectionEnum::WORK_TOGETHER->value)->first();
-        $life_without      = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::LIFE_WITHOUT->value)->get();
+        // $hero           = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::HERO)->first();
+        $product        = Product::where('status', 'active')->first();
+        $worktogether   = CMS::where('page', PageEnum::HOME->value)->where('section', SectionEnum::WORK_TOGETHER->value)->first();
+        // $life_without   = CMS::where('page', PageEnum::HOME)->where('section', SectionEnum::LIFE_WITHOUT->value)->get();
 
 
-        $data['hero'] = $hero ? new CMSResource($hero) : null;
+        $data['hero'] = $this->hero();
         $data['product'] = $product ? new ProductResource($product) : null;
+        $data['life_without'] = $this->lifeWithout();
         $data['work_together'] = $worktogether ? new CMSResource($worktogether) : null;
-        $data['life_without'] = $life_without ? CMSResource::collection($life_without) : null;
+
 
 
         return Helper::jsonResponse(true, 'Home Page', 200, $data);
