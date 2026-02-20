@@ -39,7 +39,7 @@
                                 <button type="button" class="btn btn-warning"><a href="#">Export</a></button>
                             </div>
                             <div class="card-options ms-auto">
-                                <a href="{{ route('admin.product.create') }}" class="btn btn-primary btn-sm">Add</a>
+                                {{-- <a href="{{ route('admin.product.create') }}" class="btn btn-primary btn-sm">Add</a> --}}
                             </div>
                         </div>
                         <div class="card-body">

@@ -80,7 +80,7 @@ class SubscriberController extends Controller
     public function pdfGuide(Request $request)
     {
         $validated = $request->validate([
-            'email' => ['required', 'email', 'unique:subscribers,email'],
+            'email' => ['required', 'email', 'unique:pdf_requests,email'],
         ]);
 
         try {

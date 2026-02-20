@@ -30,8 +30,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h3 class="mb-2 fw-semibold">{{ DB::table('users')->count() ?? 0 }}</h3>
-                                    <p class="text-muted fs-13 mb-0">Users</p>
+                                    <h3 class="mb-2 fw-semibold">{{ DB::table('orders')->count() ?? 0 }}</h3>
+                                    <p class="text-muted fs-13 mb-0">All Orders</p>
                                 </div>
                                 <div class="col col-auto top-icn dash">
                                     <div class="counter-icon bg-primary dash ms-auto box-shadow-primary">
@@ -50,8 +50,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h3 class="mb-2 fw-semibold">{{  0 }}</h3>
-                                    <p class="text-muted fs-13 mb-0">Posts</p>
+                                    <h3 class="mb-2 fw-semibold">{{ DB::table('orders')->where('status', 'completed')->count() ?? 0 }}</h3>
+                                    <p class="text-muted fs-13 mb-0">Completed Orders</p>
                                 </div>
                                 <div class="col col-auto top-icn dash">
                                     <div
@@ -70,8 +70,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h3 class="mb-2 fw-semibold">{{ 0 }}</h3>
-                                    <p class="text-muted fs-13 mb-0">Categories</p>
+                                    <h3 class="mb-2 fw-semibold">{{ DB::table('subscribers')->count() ?? 0 }}</h3>
+                                    <p class="text-muted fs-13 mb-0">Subcribers</p>
                                 </div>
                                 <div class="col col-auto top-icn dash">
                                     <div class="counter-icon bg-info dash ms-auto box-shadow-info">
@@ -90,8 +90,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <h3 class="mb-2 fw-semibold">{{ 0 }}</h3>
-                                    <p class="text-muted fs-13 mb-0">Subcategories</p>
+                                    <h3 class="mb-2 fw-semibold">{{ DB::table('pdf_requests')->count() ?? 0 }}</h3>
+                                    <p class="text-muted fs-13 mb-0">PDF Requests</p>
                                 </div>
                                 <div class="col col-auto top-icn dash">
                                     <div class="counter-icon bg-warning dash ms-auto box-shadow-warning">
