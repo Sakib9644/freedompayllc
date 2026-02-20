@@ -80,6 +80,11 @@ class HomeController extends Controller
         $subscriber = CMS::where('page', 'all')->where('section', 'all-subscriber')->where('slug', 'subscriber')->orderBy('id', 'desc')->first();
         return $subscriber ? new CMSResource($subscriber) : null;
     }
+    public static function pdf_request()
+    {
+        $pdf_request = CMS::where('page', 'all')->where('section', 'all-pdf-request')->where('slug', 'pdf-request')->orderBy('id', 'desc')->first();
+        return $pdf_request ? new CMSResource($pdf_request) : null;
+    }
 
     public function index()
     {
@@ -113,6 +118,7 @@ class HomeController extends Controller
         $data['founder_story']      = $this->founderStory();
         // $data['home_about']         = $this->homeAbout();
         $data['subscriber']         = $this->subscriber();
+        $data['pdf_request']        = $this->pdf_request();
         $data['settings']           = $this->settings();
 
         return Helper::jsonResponse(true, 'Home Page', 200, $data);
