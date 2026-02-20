@@ -67,8 +67,8 @@
                                     <tr>
                                         <th>Action</th>
                                         <td>
-                                            <a href="javascript:window.history.back()"
-                                                class="btn btn-sm btn-danger">Delete</a>
+                                            <button onclick="showDeleteConfirm({{ $subcribe->id }})"
+                                                class="btn btn-sm btn-danger">Delete</button>
 
                                         </td>
                                     </tr>
@@ -86,22 +86,32 @@
                                             <th>Subject</th>
                                             <th>Message</th>
                                             <th>Date</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($subcribe->emailLogs as $log)
                                             <tr>
-                                            {{-- <td>{{ $log->from_email ?? 'N/A' }}</td>
+                                                {{-- <td>{{ $log->from_email ?? 'N/A' }}</td>
                                             <td>{{ $log->to_email ?? 'N/A' }}</td> --}}
-                                            <td>{{ $log->subject ?? 'N/A' }}</td>
-                                            <td>
-                                                @if($log->message != null)
-                                                <pre>{{ strip_tags($log->message?? 'N/A') }}</pre>
-                                                @endif
-                                            </td>
-                                            <td style="width: 180px">{{ $log->created_at ? $log->created_at->format('d M Y H:i:s') : 'N/A' }}</td>
+                                                <td>{{ $log->subject ?? 'N/A' }}</td>
+                                                <td>
+                                                    @if ($log->message != null)
+                                                        {{ e(strip_tags($log->message), 100) }}
+                                                    @endif
+                                                </td>
+                                                <td style="width: 180px">
+                                                    {{ $log->created_at ? $log->created_at->format('d M Y H:i:s') : 'N/A' }}
+                                                </td>
+                                                <td>
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-primary mt-1 view-message-btn"
+                                                        data-message="{{ base64_encode($log->message) }}"
+                                                        data-bs-toggle="modal" data-bs-target="#messageModal">
+                                                        <i class="fa-solid fa-eye me-1"></i> View
+                                                    </button>
 
-                                        </tr>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -183,7 +193,91 @@
         </div>
     </div>
 
+
+    <!-- Message Modal for view -->
+    <div class="modal fade" id="messageModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Email Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <pre id="modalMessageContent" style="white-space: pre-wrap;"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- CONTAINER CLOSED -->
 @endsection
 @push('scripts')
+    <script>
+        function showDeleteConfirm(id) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Are you sure you want to delete this record?',
+                text: 'If you delete this, it will be gone forever.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteItem(id);
+                }
+            });
+        }
+
+        // Delete Button
+        function deleteItem(id) {
+            NProgress.start();
+            let url = "{{ route('admin.subscriber.destroy', ':id') }}";
+            let csrfToken = '{{ csrf_token() }}';
+            $.ajax({
+                type: "DELETE",
+                url: url.replace(':id', id),
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                success: function(resp) {
+                    NProgress.done();
+                    toastr.success(resp.message);
+                    // $('#datatable').DataTable().ajax.reload();
+                    setTimeout(function() {
+                        window.location.replace("{{ route('admin.subscriber.index') }}");
+                    }, 1500)
+                    // toastr.success(resp.message, '', {
+                    //     onHidden: function() {
+                    //         window.location.replace("{{ route('admin.subscriber.index') }}");
+                    //     }
+                    // });
+                },
+                error: function(error) {
+                    NProgress.done();
+                    toastr.error(error.message);
+                }
+            });
+        }
+    </script>
+   <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const messageModal = document.getElementById('messageModal');
+
+    messageModal.addEventListener('show.bs.modal', function (event) {
+
+        const button = event.relatedTarget;
+        const encodedMessage = button.getAttribute('data-message');
+
+        // Decode base64
+        const decodedMessage = atob(encodedMessage);
+
+        // Render HTML
+        document.getElementById('modalMessageContent').innerHTML = decodedMessage;
+    });
+
+});
+</script>
 @endpush

@@ -206,6 +206,7 @@ Route::group(['middleware' => ['web-admin']], function () {
     Route::controller(SubscriberController::class)->prefix('subscriber')->name('subscriber.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/show/{id}', 'show')->name('show');
+        Route::delete('/delete/{id}', 'destroy')->name('destroy');
     });
     Route::controller(ContactController::class)->prefix('contact')->name('contact.')->group(function () {
         Route::get('/', 'index')->name('index');

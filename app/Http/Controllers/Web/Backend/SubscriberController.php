@@ -8,6 +8,7 @@ use App\Models\Subscriber;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -52,5 +53,19 @@ class SubscriberController extends Controller
         }
 
         return view("backend.layouts.subscriber.show", compact('subcribe'));
+    }
+
+     public function destroy($id)
+    {
+        try {
+            $subscriber = Subscriber::findOrFail($id);
+            $subscriber->delete();
+             return new JsonResponse(['t-success' => true, 'message' => 'Subscriber deleted successfully.']);
+              // return redirect()->route('admin.subscriber.index')->with('t-success', 'Subscriber deleted successfully.');
+
+        } catch (Exception $e) {
+            Log::error('Failed to delete subscriber: ' . $e->getMessage());
+            return new JsonResponse(['t-error' => false, 'message' => 'Failed to delete subscriber. Please try again later.'], 500);
+        }
     }
 }

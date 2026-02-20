@@ -43,6 +43,19 @@ class EmailLogController extends Controller
             }
     }
 
+    public function destroy($id)
+    {
+        try {
+            $emailLog = EmailLog::findOrFail($id);
+            $emailLog->delete();
+            return new JsonResponse(['success' => true, 'message' => 'Email log deleted successfully.']);
+
+        } catch (Exception $e) {
+            Log::error('Failed to delete email log: ' . $e->getMessage());
+            return new JsonResponse(['success' => false, 'message' => 'Failed to delete email log. Please try again later.'], 500);
+        }
+    }
+
    
     
 }
