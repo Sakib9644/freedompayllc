@@ -13,16 +13,16 @@ class AdminCustomMail extends Mailable
 {
     use SerializesModels;
 
-    public $bodyMessage;
+    public $content;
 
-    public function __construct($subject, $bodyMessage)
+    public function __construct($subject, $content)
     {
         $this->subject($subject);
-        $this->bodyMessage = $bodyMessage;
+        $this->content = $content;
     }
 
     public function build()
     {
-        return $this->view('emails.admin_custom');
+        return $this->view('mail.message')->with(['content' => $this->content]);
     }
 }

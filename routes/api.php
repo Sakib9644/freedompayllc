@@ -35,6 +35,7 @@ Route::get('/social/links', [SocialLinksController::class, 'index']);
 Route::get('/settings', [SettingsController::class, 'index']);
 Route::get('/faq', [FaqController::class, 'index']);
 Route::post('subscriber/store', [SubscriberController::class, 'store'])->name('api.subscriber.store');
+Route::post('subscriber/remove/{token}', [SubscriberController::class, 'remove'])->name('api.subscriber.remove');
 Route::post('pdf-request/store', [SubscriberController::class, 'pdfGuide'])->name('api.pdf.request.store');
 
 /*

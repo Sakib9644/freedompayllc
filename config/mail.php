@@ -36,6 +36,7 @@ return [
     */
 
     'mailers' => [
+        'mailFrom'=>env('MAIL_FROM_ADDRESS', 'hello@example.com'),
 
         'smtp' => [
             'transport' => 'smtp',

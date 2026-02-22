@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SubscribeMail;
 use App\Models\PdfRequest;
 use App\Models\Subscriber;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class SubscriberController extends Controller
@@ -57,6 +59,7 @@ class SubscriberController extends Controller
             $subscriber = Subscriber::create([
                 'email' => $validated['email'],
             ]);
+            Mail::to($subscriber->email)->send(new SubscribeMail($subscriber));
 
             return response()->json([
                 'success' => true,
@@ -67,6 +70,37 @@ class SubscriberController extends Controller
         } catch (\Throwable $e) {
 
             Log::error('Subscriber creation failed', [
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong. Please try again.',
+            ], 500);
+        }
+    }
+      public function remove($token)
+    {
+  
+        try {
+            $subscriber = Subscriber::where('email', $token)->first();
+            if (!$subscriber) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Subscriber not found.',
+                ], 404);
+            }
+            $subscriber->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Subscriber removed successfully.',
+                'data'    => $subscriber,
+            ], 201);
+
+        } catch (\Throwable $e) {
+
+            Log::error('Subscriber removal failed', [
                 'error' => $e->getMessage()
             ]);
 
@@ -87,6 +121,8 @@ class SubscriberController extends Controller
             $subscriber = PdfRequest::create([
                 'email' => $validated['email'],
             ]);
+            Mail::to($subscriber->email)->send(new SubscribeMail($subscriber));
+
 
             return response()->json([
                 'success' => true,
@@ -97,6 +133,7 @@ class SubscriberController extends Controller
         } catch (\Throwable $e) {
 
             Log::error('PDF Request creation failed', [
+                
                 'error' => $e->getMessage()
             ]);
 

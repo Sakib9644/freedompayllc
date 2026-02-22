@@ -25,6 +25,6 @@ class PdfDownloadMail extends Mailable
     public function build()
     {
         return $this->subject('Your PDF Download Link')
-                    ->view('emails.pdf_download');
+                    ->view('mail.downloadRequest');
     }
 }
