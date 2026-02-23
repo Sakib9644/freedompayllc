@@ -8,7 +8,7 @@ jobs:
     name: FTP-Deploy-Action
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2.1.0
         with:
           fetch-depth: 2
       - name: FTP-Deploy-Action
@@ -17,14 +17,3 @@ jobs:
           server: 93.188.160.207
           username: nocolon-ftp
           password: "bZpRmu0KW13imaCTkcaS"
-          server-dir: /public_html/
-          protocol: ftp
-          port: 21
-          log-level: verbose
-          security: loose
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/vendor/**
-            **/.env
