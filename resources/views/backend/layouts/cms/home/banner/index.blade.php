@@ -62,7 +62,6 @@
                                             <div class="form-group">
                                                 <label class="form-label">Banner Video</label>
 
-                                                {{-- VIDEO PREVIEW --}}
                                                 @if (!empty($data->bg))
                                                     <video width="100%" height="300" controls class="mb-2">
                                                         <source src="{{ asset($data->bg) }}" type="video/mp4">
