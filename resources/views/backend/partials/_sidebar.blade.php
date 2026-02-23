@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 @endphp
 
+<!--APP-SIDEBAR-->
 <div class="sticky">
     <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
     <div class="app-sidebar" style="overflow: scroll">
