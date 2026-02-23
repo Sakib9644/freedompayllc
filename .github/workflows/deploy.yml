@@ -14,6 +14,6 @@ jobs:
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: https://93.188.160.207:8443/
+          server: 93.188.160.207
           username: nocolon-ftp
           password: "bZpRmu0KW13imaCTkcaS"
