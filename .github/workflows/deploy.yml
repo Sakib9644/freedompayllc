@@ -14,6 +14,6 @@ jobs:
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
-          server: ftp.thewarriors.team
-          username: freedompayllc@freedompayllc.thewarriors.team
-          password: "1U%wTz4;T,crf[fz"
+          server: https://93.188.160.207:8443/
+          username: nocolon-ftp
+          password: "bZpRmu0KW13imaCTkcaS"
